@@ -1,0 +1,29 @@
+@startuml Basic Sample 
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!define SPRITESURL https://raw.githubusercontent.com/plantuml-stdlib/gilbarbara-plantuml-sprites/v1.0/sprites
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!includeurl SPRITESURL/mongodb.puml
+!include DEVICONS/react.puml
+!include DEVICONS/nodejs.puml
+Person(aluno, "Aluno", "Acessa o sistema do aluno")
+Person(admin, "Administrador", "Administra o sistema da academia")
+Container(site_aluno, "Site do aluno", "React", "SPA em React que é responsável pelo sistema dos alunos", $sprite="react")
+Container(site_admin, "Sistema do administrador", "React", "SPA em React que é usada para dar suporte aos administradores do sistema", $sprite="react")
+System_Boundary(contexto, "Contexto do sistema da Academia Lanza") {
+  Container(modalidades_controller, "controller de modalidades", "Nodejs", "Controller responsável pelo CRUD de modalidades", $sprite="nodejs")
+  Container(financeiro_controller, "controller financeiro", "Nodejs", "Valida e invalida comprovantes de pagamento referentes às mensalidades. Conta com o apoio de um cron job que gerencia as inadimplências dos alunos.", $sprite="nodejs")
+  Container(auth_aluno_controller, "controller de autenticação dos alunos", "Nodejs", "Cuida da autenticação dos alunos", $sprite="nodejs")
+  Container(auth_admin_controller, "controller de autenticação dos administradores do sistema", "Nodejs", "Cuida da autenticação dos administradores do sistema", $sprite="nodejs")
+  Container(presenca_controller, "controller de controle de presença", "Nodejs", "Controla as presenças dos alunos", $sprite="nodejs")
+}
+ContainerDb(db, "Banco de Dados", "Mongo DB", "Armazena as informações do sistema", $sprite="mongodb")
+Container(estatistica_controller, "controller de estatísticas", "Nodejs", "Agrupa os dados da aplicação para prover os dados para as estatísticas do sistema", $sprite="nodejs")
+
+
+Rel(aluno, site_aluno, "Acessa")
+Rel(admin, site_admin, "Gerencia")
+Rel(site_aluno, contexto, "Faz chamadas HTTP")
+Rel(site_admin, contexto, "Faz chamadas HTTP")
+Rel(contexto, db, "Armazena no banco de dados Mongo")
+
+@enduml

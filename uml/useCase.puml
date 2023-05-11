@@ -1,0 +1,49 @@
+@startuml Casos de Uso
+
+left to right direction
+'top to bottom direction
+
+package ModuloCliente as mc {
+  actor Cliente as cl
+  usecase "Matricular" as Matricular
+  usecase "Logar" as Logar
+  usecase "Mudar Modalidade" as MudarModalidade
+  usecase "Notificar Presença ou Falta" as NotificarPresenca
+  usecase "Notificar Pagamento com Comprovante" as NotificarPagamento
+}
+package ModuloAdmin as ma {
+  actor Admin as ad  
+  usecase "Registrar" as Registrar
+  usecase "Logar Admin" as LogarAdmin
+  usecase "Painel de Presenças" as PainelPresencas
+  usecase "Painel de Comprovantes" as PainelComprovantes
+  usecase "ValidarComprovante" as ValidarComprovante
+  usecase "InvalidarComprovante" as InvalidarComprovante
+  usecase "Listagem de Modalidades" as ListagemModalidades
+  usecase "Editar Modalidades" as EditarModalidades
+  usecase "Deletar Modalidades" as DeletarModalidades
+  usecase "Visualizar Estatísticas" as VisualizarEstatisticas
+}
+cl --> Matricular
+cl --> Logar
+cl --> MudarModalidade
+ad --> ListagemModalidades
+ad --> EditarModalidades
+ad --> DeletarModalidades
+ad --> VisualizarEstatisticas
+ad --> LogarAdmin
+ad --> Registrar
+DeletarModalidades --> ListagemModalidades
+EditarModalidades --> ListagemModalidades
+MudarModalidade --> ListagemModalidades
+cl --> NotificarPresenca
+NotificarPresenca --> PainelPresencas : include
+ad --> PainelPresencas
+cl --> NotificarPagamento
+NotificarPagamento --> PainelComprovantes : include
+ad --> ValidarComprovante
+ValidarComprovante --> PainelComprovantes
+ad --> InvalidarComprovante
+InvalidarComprovante --> PainelComprovantes
+
+@enduml

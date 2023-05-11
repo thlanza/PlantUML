@@ -1,0 +1,17 @@
+@startuml Basic Sample 
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(aluno, "Aluno", "Acessa o sistema do aluno")
+Person(admin, "Administrador", "Administra o sistema da academia")
+System_Boundary(c1, "Contexto do sistema da Academia Lanza") {
+  System(site_aluno, "Site do aluno", "Aplicativo é responsável pelas chamadas dos alunos")
+  System(site_admin, "Sistema do administrador", "Site é responsável pelas chamadas dos alunos")
+  System(api, "API do sistema", "API  é responsável por prover o backend tanto do sistema de alunos quando do administrador")
+}
+
+Rel(aluno, site_aluno, "Acessa")
+Rel(admin, site_admin, "Gerencia")
+Rel(site_aluno, api, "Acessa")
+Rel(site_admin, api, "Acessa")
+
+@enduml
