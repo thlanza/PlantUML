@@ -12,18 +12,26 @@ package ModuloCliente as mc {
   usecase "Notificar Pagamento com Comprovante" as NotificarPagamento
 }
 package ModuloAdmin as ma {
+  cloud CronJob as cron
   actor Admin as ad  
+  usecase "Mudança de Mês" as MudancaMes
   usecase "Registrar" as Registrar
   usecase "Logar Admin" as LogarAdmin
   usecase "Painel de Presenças" as PainelPresencas
   usecase "Painel de Comprovantes" as PainelComprovantes
   usecase "ValidarComprovante" as ValidarComprovante
   usecase "InvalidarComprovante" as InvalidarComprovante
+  usecase "Criar Nova Modalidade" as CriarModalidade
   usecase "Listagem de Modalidades" as ListagemModalidades
+  usecase "Download das Modalidades em Pdf" as DownloadModalidades
   usecase "Editar Modalidades" as EditarModalidades
   usecase "Deletar Modalidades" as DeletarModalidades
   usecase "Visualizar Estatísticas" as VisualizarEstatisticas
+  usecase "Visualizar Alunos" as VisualizarAlunos
+  usecase "Deletar Aluno" as DeletarAluno
+  usecase "Visualizar Agenda" as VisualizarAgenda
 }
+cron --> MudancaMes
 cl --> Matricular
 cl --> Logar
 cl --> MudarModalidade
@@ -33,8 +41,15 @@ ad --> DeletarModalidades
 ad --> VisualizarEstatisticas
 ad --> LogarAdmin
 ad --> Registrar
-DeletarModalidades --> ListagemModalidades
-EditarModalidades --> ListagemModalidades
+ad --> CriarModalidade
+ad --> DownloadModalidades
+ad --> VisualizarAlunos
+ad --> VisualizarAgenda
+VisualizarAlunos --> DeletarAluno
+ad --> DeletarAluno
+CriarModalidade --> ListagemModalidades
+ListagemModalidades --> DeletarModalidades 
+ListagemModalidades --> EditarModalidades
 MudarModalidade --> ListagemModalidades
 cl --> NotificarPresenca
 NotificarPresenca --> PainelPresencas : include
